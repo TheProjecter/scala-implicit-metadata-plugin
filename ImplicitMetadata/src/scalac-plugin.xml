@@ -1,0 +1,4 @@
+<plugin>
+  <name>ee.implicitMetadataPlugin</name>
+  <classname>ee.scala.plugin.implicitMetadata.ImplicitMetadataPlugin</classname>
+</plugin>
