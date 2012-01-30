@@ -2,8 +2,8 @@ package ee.scala.plugin.implicitMetadata
 
 case class Metadata(
         val name:String, 
-        val definition:Class[_]//,
-        //val owner:Any
+        val definition:Class[_],
+        val owner:Any
 ) {}
 
 object Metadata {

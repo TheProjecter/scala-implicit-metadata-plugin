@@ -45,13 +45,13 @@ class ImplicitMetadataPlugin(val global:Global) extends Plugin {
 	        
 	        override def transform(tree: Tree): Tree = {
 	        	tree match {
-		        	case methodFound @ Apply(fun, List(arg:Tree)) if fun.symbol == any2MetadataMethod =>
+		        	case methodFound @ Apply(fun, List(arg:Select)) if fun.symbol == any2MetadataMethod =>
 			          typedPos(tree.pos) { newMetadataInstance(arg) }
 		        	case x => super.transform(x)
 		        }   
 	        }
 	      
-	        def newMetadataInstance(arg:Tree) = 
+	        def newMetadataInstance(arg:Select) = 
 	        	Apply(
 	        		Select(
 	        			New(
@@ -61,7 +61,8 @@ class ImplicitMetadataPlugin(val global:Global) extends Plugin {
 	        		),
 			        List(
 			        	Literal(arg.symbol.name.toString),
-			        	Literal(arg.symbol.tpe.typeOfThis)
+			        	Literal(arg.symbol.info.typeOfThis),
+			        	arg.qualifier
 			        )
 			    )
 	        
