@@ -7,15 +7,22 @@ object TestImplicitMetadataPlugin {
     val val_d_list_string = List[String]()
     
     val subInstance = new {
-        val sub_element_other_owner = ""
+        val val_e_string_subInstance_owner = ""
     }
+    
+    var var_f_string = ""
+    def def_g = {}
     
 	def main(args: Array[String]) = {
 	    test(val_a_string);
 	    test(val_b_int)
 	    test(val_c_metadata)
 	    test(val_d_list_string)
-	    test(subInstance.sub_element_other_owner)
+	    test(subInstance.val_e_string_subInstance_owner)
+	    test(var_f_string)
+	    test(def_g)
+	    //test(TestImplicitMetadataPlugin) //throws a compiler error 
+	    
 	}
 
     def test(metadata:Metadata) = {
