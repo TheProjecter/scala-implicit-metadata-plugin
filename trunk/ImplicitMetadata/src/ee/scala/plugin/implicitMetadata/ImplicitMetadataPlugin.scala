@@ -38,6 +38,7 @@ class ImplicitMetadataPlugin(val global:Global) extends Plugin {
 	    protected def newTransformer(compilationUnit:CompilationUnit): Transformer = new TypingTransformer(compilationUnit) {
 	        
 	        lazy val metadataClassName = classOf[Metadata].getName
+
 	        lazy val metadataModule = definitions.getModule(metadataClassName)
 	        lazy val metadataClass = definitions.getClass(metadataClassName)
 	        
@@ -47,6 +48,9 @@ class ImplicitMetadataPlugin(val global:Global) extends Plugin {
 	        	tree match {
 		        	case methodFound @ Apply(fun, List(arg:Select)) if fun.symbol == any2MetadataMethod =>
 			          typedPos(tree.pos) { newMetadataInstance(arg) }
+		        	case methodFound @ Apply(fun, args) if fun.symbol == any2MetadataMethod =>
+		        	    compilationUnit.error(tree.pos, "Can not convert to Metadata, only var, val and def (without parentheses) members can be converted")
+		        	    super.transform(methodFound)
 		        	case x => super.transform(x)
 		        }   
 	        }
@@ -60,8 +64,8 @@ class ImplicitMetadataPlugin(val global:Global) extends Plugin {
 			        	nme.CONSTRUCTOR
 	        		),
 			        List(
-			        	Literal(arg.symbol.name.toString),
-			        	Literal(arg.symbol.info.typeOfThis),
+			        	Literal(arg.name.toString),
+			        	Literal(arg.tpe),
 			        	arg.qualifier
 			        )
 			    )

@@ -1,8 +1,9 @@
 package ee.scala.plugin.implicitMetadata
+import java.lang.reflect.Type
 
 case class Metadata(
         val name:String, 
-        val definition:Class[_],
+        val definition:Type,
         val owner:Any
 ) {}
 
@@ -11,7 +12,7 @@ object Metadata {
         try {
         	any.asInstanceOf[Metadata]
         } catch {
-            case _ => throw new RuntimeException("Make sure you have the 'ee.implicitMetadataPlugin' compiler plugin installed")
+            case e => throw new RuntimeException("Make sure you have the 'ee.implicitMetadataPlugin' compiler plugin installed", e)
         }
     }
 }
