@@ -12,6 +12,7 @@ object TestImplicitMetadataPlugin {
     
     var var_f_string = ""
     def def_g = {}
+    def def_h() = {}
     
 	def main(args: Array[String]) = {
 	    test(val_a_string);
@@ -21,11 +22,22 @@ object TestImplicitMetadataPlugin {
 	    test(subInstance.val_e_string_subInstance_owner)
 	    test(var_f_string)
 	    test(def_g)
+	    test(def_h)
+	    
+	    val_a_string test_: this
 	    //test(TestImplicitMetadataPlugin) //throws a compiler error 
 	    
 	}
 
     def test(metadata:Metadata) = {
+        metadata.owner match {
+            case TestImplicitMetadataPlugin => println("TestImplicitMetadataPlugin")
+            case other => println(if (other == subInstance) "subInstance" else "unknown")
+            
+        } 
+        
         println(metadata)
     }
+    
+    def test_:(metadata:Metadata) = test(metadata)
 }
